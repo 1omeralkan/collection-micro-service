@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="002-1" author="omeralkan">
+        <createTable tableName="error_messages">
+            <column name="error_code" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="VARCHAR(5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
+        </createTable>
+
+        <addPrimaryKey
+                tableName="error_messages"
+                columnNames="error_code, language"
+                constraintName="pk_error_messages"/>
+    </changeSet>
+
+    <changeSet id="002-2" author="omeralkan">
+        <!-- COL-404 -->
+        <insert tableName="error_messages">
+            <column name="error_code" value="COL-404"/>
+            <column name="language" value="tr"/>
+            <column name="message" value="Aradığınız tahsilat kaydı sistemde bulunamadı veya silinmiş olabilir."/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="created_by" value="system"/>
+        </insert>
+        <insert tableName="error_messages">
+            <column name="error_code" value="COL-404"/>
+            <column name="language" value="en"/>
+            <column name="message" value="The requested collection record was not found or may have been deleted."/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="created_by" value="system"/>
+        </insert>
+
+        <!-- COL-400-PAID -->
+        <insert tableName="error_messages">
+            <column name="error_code" value="COL-400-PAID"/>
+            <column name="language" value="tr"/>
+            <column name="message" value="Bu taksit zaten ödenmiş durumda."/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="created_by" value="system"/>
+        </insert>
+        <insert tableName="error_messages">
+            <column name="error_code" value="COL-400-PAID"/>
+            <column name="language" value="en"/>
+            <column name="message" value="This installment has already been paid."/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="created_by" value="system"/>
+        </insert>
+
+        <!-- COL-APP-ERR -->
+        <insert tableName="error_messages">
+            <column name="error_code" value="COL-APP-ERR"/>
+            <column name="language" value="tr"/>
+            <column name="message" value="Başvuru servisine erişilemiyor. Lütfen daha sonra tekrar deneyin."/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="created_by" value="system"/>
+        </insert>
+        <insert tableName="error_messages">
+            <column name="error_code" value="COL-APP-ERR"/>
+            <column name="language" value="en"/>
+            <column name="message" value="Application service is unavailable. Please try again later."/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="created_by" value="system"/>
+        </insert>
+
+        <!-- SYS-500 (genel hata) -->
+        <insert tableName="error_messages">
+            <column name="error_code" value="SYS-500"/>
+            <column name="language" value="tr"/>
+            <column name="message" value="Beklenmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyin."/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="created_by" value="system"/>
+        </insert>
+        <insert tableName="error_messages">
+            <column name="error_code" value="SYS-500"/>
+            <column name="language" value="en"/>
+            <column name="message" value="An unexpected error occurred. Please try again later."/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="created_by" value="system"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
