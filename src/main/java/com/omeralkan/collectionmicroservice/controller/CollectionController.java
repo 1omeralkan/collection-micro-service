@@ -16,7 +16,7 @@ public class CollectionController {
 
     private final CollectionService collectionService;
 
-    // Application servisi bu endpoint'i Feign ile çağıracak
+    // Application servisi bu endpointi Feign ile çağıracak
     @PostMapping("/application/{applicationId}")
     public ResponseEntity<List<CollectionResponseDto>> createCollections(
             @PathVariable Long applicationId) {

@@ -4,7 +4,6 @@ import com.omeralkan.collectionmicroservice.client.ApplicationResponseClientDto;
 import com.omeralkan.collectionmicroservice.client.ApplicationServiceClient;
 import com.omeralkan.collectionmicroservice.dto.response.CollectionResponseDto;
 import com.omeralkan.collectionmicroservice.entity.CollectionEntity;
-import com.omeralkan.collectionmicroservice.entity.CollectionStatus;
 import com.omeralkan.collectionmicroservice.exception.BusinessException;
 import com.omeralkan.collectionmicroservice.exception.ErrorCodes;
 import com.omeralkan.collectionmicroservice.mapper.CollectionMapper;
@@ -83,16 +82,15 @@ public class CollectionServiceImpl implements CollectionService {
     public CollectionResponseDto payInstallment(Long id) {
         CollectionEntity entity = findActiveCollectionOrThrow(id);
 
-        if (entity.getStatus() == CollectionStatus.PAID) {
+        if (Boolean.TRUE.equals(entity.getIsPaid())) {
             throw new BusinessException(ErrorCodes.COLLECTION_ALREADY_PAID, HttpStatus.BAD_REQUEST);
         }
 
-        entity.setStatus(CollectionStatus.PAID);
+        entity.setIsPaid(true);
         CollectionEntity updatedEntity = collectionRepository.save(entity);
 
-        log.info("Taksit ödendi. ID: {}, Taksit No: {}, Tutar: {}",
+        log.info("Taksit  dendi. ID: {}, Taksit No: {}, Tutar: {}",
                 id, entity.getInstallmentNumber(), entity.getInstallmentAmount());
-
         return collectionMapper.toResponse(updatedEntity);
     }
 
@@ -161,7 +159,8 @@ public class CollectionServiceImpl implements CollectionService {
         entity.setInstallmentNumber(installmentNumber);
         entity.setInstallmentAmount(amount);
         entity.setDueDate(dueDate);
-        entity.setStatus(CollectionStatus.UNPAID);
+        entity.setIsPaid(false);
+
         return entity;
     }
 }

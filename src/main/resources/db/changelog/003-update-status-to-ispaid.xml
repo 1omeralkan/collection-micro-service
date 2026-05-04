@@ -5,7 +5,14 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <include file="db/changelog/001-create-collections-table.xml"/>
-    <include file="db/changelog/002-create-error-messages-table.xml"/>
-    <include file="db/changelog/003-update-status-to-ispaid.xml"/>
+    <changeSet id="003-1" author="omeralkan">
+        <dropColumn tableName="collections" columnName="status"/>
+
+        <addColumn tableName="collections">
+            <column name="is_paid" type="TINYINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

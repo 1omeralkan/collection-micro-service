@@ -16,6 +16,7 @@ public class CollectionResponseDto {
     private Integer installmentNumber;
     private BigDecimal installmentAmount;
     private LocalDate dueDate;
-    private String status;
     private Boolean isActive;
+
+    private Boolean isPaid;
 }

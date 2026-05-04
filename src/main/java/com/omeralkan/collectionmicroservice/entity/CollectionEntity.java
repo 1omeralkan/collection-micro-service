@@ -32,7 +32,6 @@ public class CollectionEntity extends BaseEntity {
     @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 20)
-    private CollectionStatus status;
+    @Column(name = "is_paid", nullable = false, columnDefinition = "TINYINT")
+    private Boolean isPaid = false;
 }

@@ -15,7 +15,7 @@ public class CollectionMapper {
         dto.setInstallmentNumber(entity.getInstallmentNumber());
         dto.setInstallmentAmount(entity.getInstallmentAmount());
         dto.setDueDate(entity.getDueDate());
-        dto.setStatus(entity.getStatus().name());
+        dto.setIsPaid(entity.getIsPaid());
         dto.setIsActive(entity.getIsActive());
         return dto;
     }
