@@ -12,4 +12,9 @@ public interface CollectionRepository extends JpaRepository<CollectionEntity, Lo
     List<CollectionEntity> findAllByApplicationIdAndIsActiveTrue(Long applicationId);
 
     Optional<CollectionEntity> findByIdAndIsActiveTrue(Long id);
+
+    boolean existsByApplicationIdAndIsPaidFalseAndIsActiveTrueAndInstallmentNumberLessThan(
+            Long applicationId,
+            Integer installmentNumber
+    );
 }

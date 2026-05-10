@@ -2,6 +2,8 @@ package com.omeralkan.collectionmicroservice.controller;
 
 import com.omeralkan.collectionmicroservice.dto.response.CollectionResponseDto;
 import com.omeralkan.collectionmicroservice.service.CollectionService;
+import com.omeralkan.collectionmicroservice.payment.PaymentRequestDto; // EKLENDİ
+import jakarta.validation.Valid; // EKLENDİ
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,6 @@ public class CollectionController {
 
     private final CollectionService collectionService;
 
-    // Application servisi bu endpointi Feign ile çağıracak
     @PostMapping("/application/{applicationId}")
     public ResponseEntity<List<CollectionResponseDto>> createCollections(
             @PathVariable Long applicationId) {
@@ -42,8 +43,10 @@ public class CollectionController {
     }
 
     @PatchMapping("/{id}/pay")
-    public ResponseEntity<CollectionResponseDto> payInstallment(@PathVariable Long id) {
-        return ResponseEntity.ok(collectionService.payInstallment(id));
+    public ResponseEntity<CollectionResponseDto> payInstallment(
+            @PathVariable Long id,
+            @Valid @RequestBody PaymentRequestDto paymentRequest) {
+        return ResponseEntity.ok(collectionService.payInstallment(id, paymentRequest));
     }
 
     @DeleteMapping("/{id}")

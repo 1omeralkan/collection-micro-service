@@ -21,4 +21,6 @@ public class ApplicationResponseClientDto {
     private String paymentTypeCode;
     private Integer installmentCount;
     private Boolean isActive;
+
+    private String currencyCode;
 }
