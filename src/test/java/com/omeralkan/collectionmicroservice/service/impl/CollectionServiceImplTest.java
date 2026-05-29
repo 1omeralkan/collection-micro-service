@@ -6,6 +6,7 @@ import com.omeralkan.collectionmicroservice.dto.response.CollectionResponseDto;
 import com.omeralkan.collectionmicroservice.entity.CollectionEntity;
 import com.omeralkan.collectionmicroservice.exception.BusinessException;
 import com.omeralkan.collectionmicroservice.mapper.CollectionMapper;
+import com.omeralkan.collectionmicroservice.payment.PaymentRequestDto;
 import com.omeralkan.collectionmicroservice.repository.CollectionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -98,12 +99,21 @@ class CollectionServiceImplTest {
         entity.setIsPaid(false); // Güncellendi
         entity.setIsActive(true);
 
+        PaymentRequestDto paymentRequest = new PaymentRequestDto();
+        paymentRequest.setCardNumber("5528790000000008");
+        paymentRequest.setCardHolderName("Test User");
+        paymentRequest.setExpireMonth("12");
+        paymentRequest.setExpireYear("28");
+        paymentRequest.setCvv("123");
+        paymentRequest.setAmount(new BigDecimal("1500"));
+
         when(collectionRepository.findByIdAndIsActiveTrue(1L)).thenReturn(Optional.of(entity));
         when(collectionRepository.save(any())).thenReturn(entity);
         when(collectionMapper.toResponse(any())).thenReturn(new CollectionResponseDto());
 
-        collectionService.payInstallment(1L);
+        CollectionResponseDto result = collectionService.payInstallment(1L, paymentRequest);
 
+        assertNotNull(result);
         assertTrue(entity.getIsPaid()); // Güncellendi
         verify(collectionRepository, times(1)).save(entity);
     }
@@ -115,10 +125,18 @@ class CollectionServiceImplTest {
         entity.setIsPaid(true);
         entity.setIsActive(true);
 
+        PaymentRequestDto paymentRequest = new PaymentRequestDto();
+        paymentRequest.setCardNumber("5528790000000008");
+        paymentRequest.setCardHolderName("Test User");
+        paymentRequest.setExpireMonth("12");
+        paymentRequest.setExpireYear("28");
+        paymentRequest.setCvv("123");
+        paymentRequest.setAmount(new BigDecimal("1500"));
+
         when(collectionRepository.findByIdAndIsActiveTrue(1L)).thenReturn(Optional.of(entity));
 
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            collectionService.payInstallment(1L);
+            collectionService.payInstallment(1L, paymentRequest);
         });
 
         assertEquals("COL-400-PAID", exception.getMessage());
