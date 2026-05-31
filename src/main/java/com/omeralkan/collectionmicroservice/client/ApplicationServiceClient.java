@@ -4,9 +4,14 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 @FeignClient(name = "application-service", url = "${application.service.url}")
 public interface ApplicationServiceClient {
 
     @GetMapping("/api/v1/applications/{id}")
     ApplicationResponseClientDto getApplicationById(@PathVariable Long id);
+
+    @GetMapping("/api/v1/applications/customer/{customerId}")
+    List<ApplicationResponseClientDto> getApplicationsByCustomerId(@PathVariable Long customerId);
 }

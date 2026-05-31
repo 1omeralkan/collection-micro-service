@@ -15,6 +15,8 @@ public interface CollectionService {
 
     List<CollectionResponseDto> getCollectionsByApplicationId(Long applicationId);
 
+    List<CollectionResponseDto> getCollectionsByCustomerId(Long customerId);
+
     CollectionResponseDto payInstallment(Long id, PaymentRequestDto paymentRequest);
 
     void deleteCollection(Long id);

@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 @Setter
 public class PolicyResponseClientDto {
     private Long id;
+    private Long customerId;
+    private Long applicationId;
     private Long productId;
     private BigDecimal amount;
     private String currencyCode;

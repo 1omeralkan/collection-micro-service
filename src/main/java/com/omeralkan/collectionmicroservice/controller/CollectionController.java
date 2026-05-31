@@ -42,6 +42,12 @@ public class CollectionController {
         return ResponseEntity.ok(collectionService.getCollectionsByApplicationId(applicationId));
     }
 
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<CollectionResponseDto>> getCollectionsByCustomerId(
+            @PathVariable Long customerId) {
+        return ResponseEntity.ok(collectionService.getCollectionsByCustomerId(customerId));
+    }
+
     @PatchMapping("/{id}/pay")
     public ResponseEntity<CollectionResponseDto> payInstallment(
             @PathVariable Long id,

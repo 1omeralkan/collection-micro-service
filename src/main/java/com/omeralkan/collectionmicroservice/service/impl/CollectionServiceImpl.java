@@ -81,6 +81,29 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    public List<CollectionResponseDto> getCollectionsByCustomerId(Long customerId) {
+        log.info("Müşteriye ait tüm tahsilatlar getiriliyor. Customer ID: {}", customerId);
+
+        try {
+            // Customer'ın tüm başvurularını application service'den çek
+            List<ApplicationResponseClientDto> applications =
+                applicationServiceClient.getApplicationsByCustomerId(customerId);
+
+            // Her başvuruya ait collection'ları topla
+            return applications.stream()
+                .flatMap(app -> collectionRepository
+                    .findAllByApplicationIdAndIsActiveTrue(app.getId())
+                    .stream())
+                .map(collectionMapper::toResponse)
+                .toList();
+        } catch (Exception e) {
+            log.error("Application servisi hatası. CustomerId: {}, Hata: {}", customerId, e.getMessage());
+            throw new BusinessException(
+                ErrorCodes.APPLICATION_SERVICE_ERROR, HttpStatus.SERVICE_UNAVAILABLE);
+        }
+    }
+
+    @Override
     @Transactional
     public CollectionResponseDto payInstallment(Long id, PaymentRequestDto paymentRequest) {
         CollectionEntity entity = findActiveCollectionOrThrow(id);
@@ -116,6 +139,8 @@ public class CollectionServiceImpl implements CollectionService {
             ApplicationResponseClientDto application = getApplicationOrThrow(entity.getApplicationId());
 
             PolicyRequestClientDto policyRequest = PolicyRequestClientDto.builder()
+                    .customerId(application.getCustomerId())
+                    .applicationId(application.getId())
                     .productId(application.getProductId())
                     .amount(application.getAmount())
                     .currencyCode(application.getCurrencyCode() != null ? application.getCurrencyCode() : "TRY")

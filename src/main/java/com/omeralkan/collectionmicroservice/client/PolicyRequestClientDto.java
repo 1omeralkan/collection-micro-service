@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class PolicyRequestClientDto {
+    private Long customerId;
+    private Long applicationId;
     private Long productId;
     private BigDecimal amount;
     private String currencyCode;
